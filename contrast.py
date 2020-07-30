@@ -8,7 +8,7 @@ class EqulizerHistogramFilter(BasicFilter):
     def filter(self, image):
         return cv2.equalizeHist(image)
 
-class ReduceContrast(BasicFilter):
+class IncreaseContrast(BasicFilter):
     def __init__(self):
         self._array = None # np.empty((255,), type=np.uint8)
         self._set_array()
@@ -29,7 +29,7 @@ class ReduceContrast(BasicFilter):
         return cv2.LUT(image, self._array)
 
 
-class IncreaseContrast(BasicFilter):
+class ReduceContrast(BasicFilter):
     def __init__(self):
         self._array = None # np.empty((255,), type=np.uint8)
         self._set_array()
