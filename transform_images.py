@@ -4,6 +4,7 @@ import argparse
 
 import cv2
 
+from contrast import ABContrast
 from contrast import IncreaseContrast, ReduceContrast, EqulizerHistogramFilter
 from illumination import GammaFilter
 from blur import AvgBlur, GaussianBlur, MedianBlur
@@ -34,6 +35,7 @@ if __name__ == '__main__':
     parser.add_argument("--poisson_noise", type=str2bool, nargs='?',const=True, default=False, help="percent of gaussian noise")
     parser.add_argument("--alpha_contrast", type=float, help="alpha of alfa-beta constrast value", default=1.00)
     parser.add_argument("--beta_contrast", type=float, help="beta of alfa-beta constrast value", default=0)
+    parser.add_argument("--to_gray", type=str2bool, nargs='?',const=True, default=False, help="convert to grayscale image")
     parser.add_argument("--histogram_equalization", type=str2bool, nargs='?',const=True, default=False, help="equalize_histogram")
     parser.add_argument("--reduce_contrast", type=str2bool, nargs='?',const=True, default=False, help="reduce_contrast")
     parser.add_argument("--increase_contrast", type=str2bool, nargs='?',const=True, default=False, help="increase_contrast")
@@ -54,6 +56,16 @@ if __name__ == '__main__':
 
         # step 0 op
         image = cv2.imread(f)
+
+        if args.to_gray:
+            t = False
+            s_image = image.shape
+            if len(s_image) > 2:
+                if s_image[2] in [3, 4]:
+                    t = True
+            if t:
+                image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
 
         # histogram equalization
         if args.histogram_equalization:
